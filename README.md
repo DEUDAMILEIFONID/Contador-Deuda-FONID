@@ -1,2 +1,177 @@
 # Contador-Deuda-FONID
 Es un contador automático de los días que el gobierno nacional, de Milei, adeuda el FONID 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador FONID - Compartir</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #8A2BE2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 4px solid #FFD700; 
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #4B0082;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .countdown-wrapper {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        .time-box {
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            min-width: 75px;
+            border-bottom: 5px solid #FFD700;
+        }
+
+        .number {
+            display: block;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #B8860B; 
+        }
+
+        .label {
+            font-size: 0.7rem;
+            color: #8A2BE2;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        /* Estilo del Botón de Compartir */
+        .btn-share {
+            background-color: #8A2BE2;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-share:hover {
+            background-color: #4B0082;
+            transform: scale(1.05);
+        }
+
+        .footer-info {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+    <h1>Milei nos debe el FONID</h1>
+    <p>Tiempo transcurrido desde el cese de pagos:</p>
+    
+    <div class="countdown-wrapper">
+        <div class="time-box">
+            <span id="days" class="number">00</span>
+            <span class="label">Días</span>
+        </div>
+        ```
+            <div class="time-box">
+                <span id="hours" class="number">00</span>
+                <span class="label">Hs</span>
+            </div>
+            <div class="time-box">
+                <span id="minutes" class="number">00</span>
+                <span class="label">Min</span>
+            </div>
+            <div class="time-box">
+                <span id="seconds" class="number">00</span>
+                <span class="label">Seg</span>
+            </div>
+        </div>
+
+        <button class="btn-share" onclick="compartirContador()">
+            <span>🔗</span> Compartir este contador
+        </button>
+
+        <div class="footer-info">
+            Referencia: 1 de enero de 2024
+        </div>
+    </div>
+
+    <script>
+        // Lógica del contador
+        function updateCounter() {
+            const startDate = new Date(2024, 0, 1, 0, 0, 0);
+            const now = new Date();
+            const diff = now - startDate;
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = d;
+            document.getElementById('hours').innerText = h.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
+        }
+
+        // Lógica para compartir
+        async function compartirContador() {
+            const shareData = {
+                title: 'Contador de Deuda FONID',
+                text: 'Mira cuántos días han pasado desde que el Gobierno Nacional adeuda el pago del FONID.',
+                url: window.location.href
+            };
+
+            try {
+                // Si el navegador soporta compartir nativamente
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    // Si no, copiamos al portapapeles
+                    await navigator.clipboard.writeText(window.location.href);
+                    alert('¡Enlace copiado al portapapeles!');
+                }
+            } catch (err) {
+                console.log('Error al compartir:', err);
+            }
+        }
+
+        setInterval(updateCounter, 1000);
+        updateCounter();
+    </script>
+
+</body>
+</html>
